@@ -5,7 +5,7 @@ const inquirer = require('inquirer');
 
 
 const employeeQ = () => {
-    return inquirer.prompt (
+    return inquirer.prompt([
     {
         //Prompt for team manager info 
         type: 'input',
@@ -151,7 +151,7 @@ const employeeQ = () => {
             console.log('You must enter an ID number!');
             return false;
         }
-    }
+      }
     },
     {
          type: 'input',
@@ -164,13 +164,15 @@ const employeeQ = () => {
             console.log('You must enter an email address!');
             return false;
         }
-    }
+       }
     },
     {
          type: 'input', 
          name: 'school',
          message: 'What school does the intern go to?(Required)'
-    }
-)};
+    },
+]);
+
+};
 
 employeeQ();
