@@ -1,16 +1,19 @@
-//although not rewuirement consider adding validation
+//although not requirement consider adding validation
 //install inquirer
 
-// const inquirer = require('inquirer');
+const inquirer = require('inquirer');
 
 
-// const employeeQ = () => {
-//     return inquirer.prompt ({
-//         //what is the employee status
-//     {
-//         type: 'input',
-//         name: 'employeeType',
-//         message: 'what is your employee status?'
-//     },
+const employeeQ = () => {
+    return inquirer.prompt (
+    {
+        //Prompt for team manager info 
+        type: 'input',
+        name: 'managerInfo',
+        message: 'what is your employee status?'
+    },
+    {
+        //
+    }
 
-//     });
+    });
