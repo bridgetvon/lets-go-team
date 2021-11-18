@@ -20,6 +20,12 @@ test('check that getID returns a number', () => {
     expect(idNumber.getId()).toEqual(expect.any(Number));
 });
 
+//ask about this 
+test('check that getID does not return a string', () => {
+    const id = new Employee('Bridget', 23, 'bridget@gmail.com');
+    expect(id.getId()).toEqual(expect.not.stringContaining('sdgkjg'));
+});
+
 test('check that a string is returned for email', () => {
     const email = new Employee('Bridget', 23, 'bridget@gmail.com');
     expect(email.getEmail()).toEqual(expect.any(String));
