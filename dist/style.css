@@ -1,14 +1,28 @@
+body{
+    font-family: roboto;
+    font-style: bold;
+}
 header {
     padding: 50px;
-    background-color: teal;
+    background-color: #08979D;
     color: #fff;
     font-size: 175%;
-    place-content: center;
+    text-align: center; 
+    border-bottom: 3px solid #CCABD8;   
 }
 
-.card-title {
-   background-color: teal;
+.card {
+    padding: 20px;
+    margin: 25px 25px 25px 25px;
+    border: 3px solid #CCABD8;
+}
+
+.card-title,
+.second-title
+{
+   background-color:#08979D;
    padding: 10px;
+   color: #fff;
 }
 
 div.card {
