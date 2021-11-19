@@ -20,7 +20,6 @@ test('check that getID returns a number', () => {
     expect(idNumber.getId()).toEqual(expect.any(Number));
 });
 
-//ask about this 
 test('check that getID does not return a string', () => {
     const id = new Employee('Bridget', 23, 'bridget@gmail.com');
     expect(id.getId()).toEqual(expect.not.stringContaining('sdgkjg'));
@@ -33,8 +32,5 @@ test('check that a string is returned for email', () => {
 
 test('make sure employee role is returned as employee', () => {
     const empRole = new Employee('Bridget', 23, 'bridget@gmail.com');
-    //why doesnt this work 
-    // expect(empRole.getRole()).toEqual(stringContaining('Employee'));
-    // expect(empRole.getRole()).toEqual('Employee');
-    
+    expect(empRole.getRole()).toEqual(expect.stringContaining('Employee'));    
 });

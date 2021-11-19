@@ -4,9 +4,13 @@ const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 
 
+const path = require('path');
+const fs = require('fs');
+//what file to use to make a directory 
+const DIST_DIR = path.resolve(__dirname, 'dist');
+const distPath = path.join(DIST_DIR, 'index.html');
 
 //install inquirer
-const fs = require('fs');
 const inquirer = require('inquirer');
 
 //link to generate 
@@ -17,6 +21,25 @@ const generate = require('./utils/generate');
 const myTeam = [];
 
 //add options to add more than one intern and engineer can you loop or does it need to be hard coded
+
+const addEmployee = () => {
+    return inquirer.prompt([
+        {
+        type: 'list', 
+        name: 'addEmployee',
+        message: 'Would you like to add another employee?',
+        choices: ['manager', 'engineer', 'intern'] 
+        },
+    ])
+    .then(employeeInputs => {
+        if(employeeInputs.addEmployee == 'engineer'){
+            engineerQ();
+        } else if (employeeInputs.addEmployee == 'intern') {
+            internQ();
+        }    
+    })
+};
+
 
 const managerQ = () => {
     return inquirer.prompt([
@@ -73,6 +96,12 @@ const managerQ = () => {
                 return false;
             }
         }
+    },
+    {
+        type: 'list', 
+        name: 'addEmployee',
+        message: 'Would you like to add another employee?',
+        choices: ['engineer', 'intern']
     }
 ])
     .then(managerInputs => {
@@ -81,7 +110,7 @@ const managerQ = () => {
 
         //push to an array 
         myTeam.push(manager);
-
+        addEmployee();
     })
 };
 
@@ -90,12 +119,6 @@ const managerQ = () => {
     //add option to add an engineer 
     const engineerQ = () => {
         return inquirer.prompt([
-    {
-        type: 'confirm',
-        name: 'addEngineer',
-        message: 'Would you like to add an Engineer to your team?',
-        default: true
-    },
     {
         type: 'input',
         name: 'engineerName',
@@ -148,24 +171,33 @@ const managerQ = () => {
             return false;
         }
       }
-    }
+    },
+    {
+    type: 'list',
+    name: 'addEngineer',
+    message: 'Would you like to add another employee to your team?',
+    choices: ['yes', 'no']
+    },
 ])
     .then(engineerInputs => {
          const { name, id, email, gitHub } = engineerInputs;
-         const engineer = new Manager (name, id, email, gitHub);
+         const engineer = new Engineer(name, id, email, gitHub);
         //array 
         myTeam.push(engineer);
+
+        if(engineerInputs.addEngineer == 'yes') {
+            addEmployee();
+        } else {
+            if (!fs.existsSync(DIST_DIR)) {
+                fs.mkdirSync(DIST_DIR);
+              }
+              fs.writeFileSync(distPath, generate(myTeam), 'utf-8');
+        }
     })
 };
    
 const internQ = () => {
     return inquirer.prompt([
-    {
-        type: 'confirm',
-        name: 'addintern',
-        message: 'Would you like to add an intern to your team?',
-        default: true
-    },
     {
         type: 'input',
         name: 'internName',
@@ -210,56 +242,53 @@ const internQ = () => {
          type: 'input', 
          name: 'school',
          message: 'What school does the intern go to?(Required)'
-    }
+    },
+    {
+        type: 'confirm',
+        name: 'addEngineer',
+        message: 'Would you like to add another employee to your team?',
+        type: true
+    },
+    {
+    type: 'list', 
+    name: 'addEmployee',
+    message: 'Would you like to add another employee?',
+    choices: ['engineer', 'intern']
+    },
 ])
     .then(internInputs => {
         const { name, id, email, school } = internInputs;
-        const intern = new Manager (name, id, email, school);
+        const intern = new Intern (name, id, email, school);
 
         myTeam.push(intern);
+        if(engineerInputs.addEngineer == true) {
+            addEmployee();
+        }
+
     })
 };
 
 //create the promise object to accept HTML content as a parameter 
 
-const writeFile = fileContent => {
-    return new Promise((resolve, reject) => {
-        fs.writeFile('./dist/index.html', fileContent, err => {
-            if (err) {
-                reject(err);
-                return;
-            }
+// const writeFile = fileContent => {
+//     return new Promise((resolve, reject) => {
+//         fs.writeFile('./dist/index.html', fileContent, err => {
+//             if (err) {
+//                 reject(err);
+//                 return;
+//             }
 
-            resolve({
-                ok:true,
-                message: 'file created!'
-            });
-    });
-  });
-};
+//             resolve({
+//                 ok:true,
+//                 message: 'file created!'
+//             });
+//     });
+//   });
+// };
 
-//ask if this is needed
-const copyFile = () => {
-    return new Promise((resolve, reject) => {
-        fs.copyFile('.src/style.css', './dist/style.css', err => {
-            if (err) {
-                reject(err);
-                return;
-            }
-
-            resolve({
-                ok: true,
-                message: 'Stylesheet created!'
-            });
-        });
-    });
-};
 
 managerQ()
-    .then(engineerQ, internQ)
-    // .then(myTeam => {
-    //     return generate(myTeam);
-    // })
+   
     
 
 
