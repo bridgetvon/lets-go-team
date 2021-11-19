@@ -28,7 +28,7 @@ const addEmployee = () => {
         type: 'list', 
         name: 'addEmployee',
         message: 'Would you like to add another employee?',
-        choices: ['manager', 'engineer', 'intern'] 
+        choices: ['engineer', 'intern'] 
         },
     ])
     .then(employeeInputs => {
@@ -97,12 +97,6 @@ const managerQ = () => {
             }
         }
     },
-    {
-        type: 'list', 
-        name: 'addEmployee',
-        message: 'Would you like to add another employee?',
-        choices: ['engineer', 'intern']
-    }
 ])
     .then(managerInputs => {
         const { name, id, email, officeNumber } = managerInputs;
@@ -172,12 +166,7 @@ const managerQ = () => {
         }
       }
     },
-    {
-    type: 'list',
-    name: 'addEngineer',
-    message: 'Would you like to add another employee to your team?',
-    choices: ['yes', 'no']
-    },
+
 ])
     .then(engineerInputs => {
          const { name, id, email, gitHub } = engineerInputs;
@@ -187,13 +176,11 @@ const managerQ = () => {
 
         if(engineerInputs.addEngineer == 'yes') {
             addEmployee();
-        } else {
-            if (!fs.existsSync(DIST_DIR)) {
-                fs.mkdirSync(DIST_DIR);
-              }
-              fs.writeFileSync(distPath, generate(myTeam), 'utf-8');
+         } else {
+            makeTeam();
         }
     })
+    
 };
    
 const internQ = () => {
@@ -243,54 +230,56 @@ const internQ = () => {
          name: 'school',
          message: 'What school does the intern go to?(Required)'
     },
-    {
-        type: 'confirm',
-        name: 'addEngineer',
-        message: 'Would you like to add another employee to your team?',
-        type: true
-    },
-    {
-    type: 'list', 
-    name: 'addEmployee',
-    message: 'Would you like to add another employee?',
-    choices: ['engineer', 'intern']
-    },
 ])
     .then(internInputs => {
         const { name, id, email, school } = internInputs;
         const intern = new Intern (name, id, email, school);
 
         myTeam.push(intern);
-        if(engineerInputs.addEngineer == true) {
+        if(internInputs.addEngineer == true) {
             addEmployee();
         }
 
-    })
+    });
 };
 
 //create the promise object to accept HTML content as a parameter 
+function makeTeam() {
+    if (!fs.existsSync(DIST_DIR)) {
+      fs.mkdirSync(DIST_DIR);
+    }
+    fs.writeFileSync(distPath, generate(myTeam), 'utf-8');
+  };
+const writeFile = fileContent => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile('./dist/index.html', fileContent, err => {
+            if (err) {
+                reject(err);
+                return;
+            }
 
-// const writeFile = fileContent => {
-//     return new Promise((resolve, reject) => {
-//         fs.writeFile('./dist/index.html', fileContent, err => {
-//             if (err) {
-//                 reject(err);
-//                 return;
-//             }
-
-//             resolve({
-//                 ok:true,
-//                 message: 'file created!'
-//             });
-//     });
-//   });
-// };
+            resolve({
+                ok:true,
+                message: 'file created!'
+            });
+    });
+  });
+};
 
 
 managerQ()
+  .then(addEmployee)
+  .then(myTeam=> {
+    return generate(myTeam);
+  })
+  .then(pageHTML => {
+    return writeFile(pageHTML);
+  })
+  .catch(err => {
+ console.log(err);
+  });
    
     
 
 
 
-module.exports = {writeFile, copyFile};

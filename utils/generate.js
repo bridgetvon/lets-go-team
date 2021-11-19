@@ -4,43 +4,46 @@
 const generateTeam = team => {
 const generateManager = function (manager) {
     return `
-    <div class="card header" style="width: 18rem;">
-    <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">${manager.id}</li>
-          <li class="list-group-item">${manager.email}</li>
-          <li class="list-group-item">${manager.officeNumber}</li>
-        </ul>
+    <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Role</h5>
+        <p class="card-text">Id:${manager.id}</p>
+        <p class="card-text">Email:${manager.email}</p>
+        <p class="card-text">Office Number:${manager.officeNumber}</p>
       </div>
     </div>
+  </div>
     `;
 }
 
 const generateEngineer = teamArray => {
     return `
-    <div class="card header" style="width: 18rem;">
-    <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">${engineer.id}</li>
-          <li class="list-group-item">${engineer.email}</li>
-          <li class="list-group-item">${engineer.officeNumber}</li>
-        </ul>
+    <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Role</h5>
+        <p class="card-text">Id:${engineer.id}</p>
+        <p class="card-text">Email:${engineer.email}</p>
+        <p class="card-text">GitHub:${engineer.gitHub}</p>
       </div>
     </div>
+  </div>
     `;
 }
 
 const generateIntern = function (intern) {
     return `
-    <div class="card header" style="width: 18rem;">
-    <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">${intern.id}</li>
-          <li class="list-group-item">${intern.email}</li>
-          <li class="list-group-item">${intern.officeNumber}</li>
-        </ul>
+    <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Role</h5>
+        <p class="card-text">Id:${intern.id}</p>
+        <p class="card-text">Email:${intern.email}</p>
+        <p class="card-text">School:${intern.school}</p>
       </div>
     </div>
+  </div>
     `;
 }
 };
@@ -63,7 +66,9 @@ module.exports = team => {
   <body>
       <header>My Team</header>
       <div>
+      <div class="row">
       ${generateTeam(team)}
+      </div>
       </div>
        
        

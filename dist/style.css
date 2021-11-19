@@ -1,0 +1,16 @@
+header {
+    padding: 50px;
+    background-color: teal;
+    color: #fff;
+    font-size: 175%;
+    place-content: center;
+}
+
+.card-title {
+   background-color: teal;
+   padding: 10px;
+}
+
+div.card {
+    
+}
