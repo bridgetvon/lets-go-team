@@ -8,6 +8,7 @@ const Intern = require("../lib/Intern");
 //make a section for manager q's
 const generateTeam = myTeam => {
   function generateManager(manager) {
+
     console.log(myTeam);
     return `
     <div class="col-sm-6">
@@ -67,6 +68,8 @@ const generateTeam = myTeam => {
   </div>
     `;
   }
+
+
   for (let i = 0; i < myTeam.length; i++) {
     if (myTeam[i].officeNumber) {
       generateManager();
