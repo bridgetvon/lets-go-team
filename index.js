@@ -2,10 +2,9 @@
 const Engineer = require('./lib/Engineer');
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
-
-
 const path = require('path');
 const fs = require('fs');
+
 //what file to use to make a directory 
 const DIST_DIR = path.resolve(__dirname, 'dist');
 const distPath = path.join(DIST_DIR, 'index.html');
@@ -14,13 +13,13 @@ const distPath = path.join(DIST_DIR, 'index.html');
 const inquirer = require('inquirer');
 
 //link to generate 
-const generate = require('./utils/generate');
+const render = require('./utils/generate');
 
 //create array to push the prompts to 
-
 const myTeam = [];
 
-//add options to add more than one intern and engineer can you loop or does it need to be hard coded
+
+//add options to add more than one intern and engineer 
 
 const addEmployee = () => {
     return inquirer.prompt([
@@ -99,16 +98,14 @@ const managerQ = () => {
     },
 ])
     .then(managerInputs => {
-        const { name, id, email, officeNumber } = managerInputs;
-        const manager = new Manager (name, id, email, officeNumber);
+        const manager = new Manager (managerInputs.name, managerInputs.id, managerInputs.email, managerInputs.officeNumber);
 
         //push to an array 
-        myTeam.push(manager);
+        myTeam.push(managerInputs);
         addEmployee();
     })
 };
 
-    //once input is receieved send it to an array 
 
     //add option to add an engineer 
     const engineerQ = () => {
@@ -169,10 +166,10 @@ const managerQ = () => {
 
 ])
     .then(engineerInputs => {
-         const { name, id, email, gitHub } = engineerInputs;
-         const engineer = new Engineer(name, id, email, gitHub);
+         const engineer = new Engineer(engineerInputs.name, engineerInputs.id, engineerInputs.email, engineerInputs.gitHub);
         //array 
-        myTeam.push(engineer);
+        myTeam.push(engineerInputs);
+        // console.log(engineerInputs);
 
         if(engineerInputs.addEngineer == 'yes') {
             addEmployee();
@@ -232,8 +229,7 @@ const internQ = () => {
     },
 ])
     .then(internInputs => {
-        const { name, id, email, school } = internInputs;
-        const intern = new Intern (name, id, email, school);
+        const intern = new Intern (internInputs.name, internInputs.id, internInputs.email, internInputs.school);
 
         myTeam.push(intern);
         if(internInputs.addEngineer == true) {
@@ -243,41 +239,45 @@ const internQ = () => {
     });
 };
 
-//create the promise object to accept HTML content as a parameter 
+
+// create the promise object to accept HTML content as a parameter 
 function makeTeam() {
     if (!fs.existsSync(DIST_DIR)) {
       fs.mkdirSync(DIST_DIR);
     }
-    fs.writeFileSync(distPath, generate(myTeam), 'utf-8');
+    fs.writeFileSync(distPath, render(myTeam), 'utf-8');
+    console.log(myTeam);
   };
-const writeFile = fileContent => {
-    return new Promise((resolve, reject) => {
-        fs.writeFile('./dist/index.html', fileContent, err => {
-            if (err) {
-                reject(err);
-                return;
-            }
-
-            resolve({
-                ok:true,
-                message: 'file created!'
-            });
-    });
-  });
-};
 
 
-managerQ()
-  .then(addEmployee)
-  .then(myTeam=> {
-    return generate(myTeam);
-  })
-  .then(pageHTML => {
-    return writeFile(pageHTML);
-  })
-  .catch(err => {
- console.log(err);
-  });
+// const writeFile = fileContent => {
+//     return new Promise((resolve, reject) => {
+//         fs.writeFile('./dist/index.html', fileContent, err => {
+//             if (err) {
+//                 reject(err);
+//                 return;
+//             }
+
+//             resolve({
+//                 ok:true,
+//                 message: 'file created!'
+//             });
+//     });
+//   });
+// }
+
+
+managerQ() 
+//   .then(addEmployee)
+//   .then(myTeam=> {
+//     return generate(myTeam);
+//   })
+//   .then(pageHTML => {
+//     return fs.writeFile(pageHTML);
+//   })
+//   .catch(err => {
+//  console.log(err);
+//   });
    
     
 
