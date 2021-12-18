@@ -22,7 +22,7 @@ This application generates a team profile based on user input from inquirer prom
 <img src="./assets/images/letsgoteam.png"/>
 
 ## Video Link
-https://watch.screencastify.com/v/8eYNYCcgtnFtZ2u296cd
+https://watch.screencastify.com/v/tOcvXSY3BcvGGsUglWpD
 
 ## Usage 
 As a manager I want to generate a webpage that dispalys my teams basic info so that I can have quick access to their emails and gitHub propfiles. 
