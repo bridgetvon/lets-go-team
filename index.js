@@ -184,7 +184,7 @@ const engineerQ = () => {
       // console.log(engineerInputs);
 
       if (engineerInputs.addEngineer == "yes") {
-        addEmployee();
+        return addEmployee();
       } else {
         makeTeam();
       }
